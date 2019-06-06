@@ -1,13 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`initial test snapshot view public repos 1`] = `
+exports[`initial test SearchBar snapshot view public repos 1`] = `
 <div
   className="search"
 >
-  <form>
+  <form
+    onSubmit={[Function]}
+  >
     <input
       onChange={[Function]}
-      onSubmit={[Function]}
       placeholder="nome do usuário no github"
       type="text"
     />

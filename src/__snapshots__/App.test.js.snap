@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initial test App snapshot 1`] = `
+<div
+  className="App"
+>
+  <div
+    className="search"
+  >
+    <form
+      onSubmit={[Function]}
+    >
+      <input
+        onChange={[Function]}
+        placeholder="nome do usuário no github"
+        type="text"
+      />
+      <input
+        onClick={[Function]}
+        type="submit"
+        value="pesquisar"
+      />
+    </form>
+  </div>
+</div>
+`;

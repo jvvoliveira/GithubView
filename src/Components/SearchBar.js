@@ -13,14 +13,17 @@ class SearchBar extends Component {
 
     //via arrow function não precisamos alterar o bind de contexto
     //declaramos como queremos fazer o request (default = fetch()), bom para os testes
-    pesquisar = (event, request = fetch) =>{ 
+    pesquisar = async (event, request = fetch) =>{ 
         event.preventDefault();
         let url = `https://api.github.com/users/${this.state.usuario}/repos`;
-        request(url).then(resposta => {
-            return resposta.json().then(json => {
-                this.props.setRepos(json);
-            })
-        });
+        const response = await request(url);
+        const json = await response.json();
+        this.props.setRepos(json);
+        // .then(resposta => {
+        //     return resposta.json().then(json => {
+        //         this.props.setRepos(json);
+        //     })
+        // });
     }
 
 

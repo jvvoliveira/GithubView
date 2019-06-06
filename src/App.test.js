@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import TestRenderer from 'react-test-renderer';
+import renderer from 'react-test-renderer';
 
-describe("initial test", () =>{
+describe("initial test App", () =>{
   it('should renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<App />, div);
@@ -30,6 +31,10 @@ describe("initial test", () =>{
     expect(app.state.repos[0].link).toEqual("www.google.com");
     expect(app.state.repos[0].language).toEqual("java");
 
+  });
+  it("snapshot",()=>{
+    const tree = renderer.create(<App></App>).toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });
 
