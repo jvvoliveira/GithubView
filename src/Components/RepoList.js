@@ -4,7 +4,8 @@ import Repo from './Repo';
 class RepoList extends Component {
 
     render() {
-        return (
+        if(this.props.repos.length != 0){
+        return(
             this.props.repos.map(repo => {
                 return (
                     <Repo name={repo.name} link={repo.html_url} language={repo.language}
@@ -12,6 +13,11 @@ class RepoList extends Component {
                 );
             })
         );
+        }else{
+            return(
+                <h3>Nenhum repositório encontrado</h3>
+            );
+        }
     }
 }
 

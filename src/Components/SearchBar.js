@@ -18,7 +18,12 @@ class SearchBar extends Component {
         let url = `https://api.github.com/users/${this.state.usuario}/repos`;
         const response = await request(url);
         const json = await response.json();
-        this.props.setRepos(json);
+        console.log(response);
+        if(response.status === 200){
+            this.props.setRepos(json);
+        }else{
+            this.props.setRepos([]);
+        }
         // .then(resposta => {
         //     return resposta.json().then(json => {
         //         this.props.setRepos(json);
