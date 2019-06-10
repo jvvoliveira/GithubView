@@ -4,9 +4,14 @@ import SearchBar from './SearchBar';
 import TestRenderer from 'react-test-renderer';
 import renderer from 'react-test-renderer';
 import { request } from 'http';
-import App from '../App';
 import { promises } from 'fs';
-import { reject } from 'q';
+import {
+    render,
+    fireEvent,
+    cleanup,
+    waitForElement,
+    createEvent
+} from '@testing-library/react';
 
 
 describe("initial test SearchBar", () => {
@@ -68,5 +73,31 @@ describe("initial test SearchBar", () => {
         const tree = renderer.create(<SearchBar></SearchBar>).toJSON();
         expect(tree).toMatchSnapshot();
     });
+    it('should write', () => {
+        const { getByText, getByTestId, container, asFragment } = render(
+            <SearchBar />
+        )
+
+        const input = getByTestId('input');
+        const button = getByTestId('searchButton');
+
+        console.log(fireEvent.change(input, {target: {value: 'jvvoliveira'}}));
+        console.log(fireEvent.click(button));
+
+        // expect(input.getAttribute('value')).toHaveTextContent(/jvvoliveira/i);
+        expect(input.innerHTML).toBe('jvvoliveira');
+        console.log(input);
+        
+    });
+    // it('should call pesquisar() when press button', () =>{
+
+    //     // const { getByText, getByTestId, container, asFragment } = render(
+    //     //     <SearchBar />
+    //     // )
+    //     // fireEvent.click(getByTestId("searchButton"));
+
+    //     // expect(SearchBar.pesquisar).toBeCalledTimes(1);
+
+    // });
 });
 

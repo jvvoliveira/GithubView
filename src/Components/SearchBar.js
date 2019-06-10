@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './SearchBar.css';
 
+
 class SearchBar extends Component {
 
     constructor(props) {
@@ -36,11 +37,11 @@ class SearchBar extends Component {
         return (
             <div className="search">
                 <form onSubmit={this.pesquisar} >
-                <input type="text" placeholder="nome do usuário no github" onChange={(event) => {
+                <input data-testid="input" type="text" placeholder="nome do usuário no github" onChange={(event) => {
                     let usuario = event.target.value;
                     this.setState({ usuario });
                 }} />
-                <input type="submit" value="pesquisar" onClick={this.pesquisar} />
+                <input data-testid="searchButton" type="submit" value="pesquisar" onClick={this.pesquisar} />
                 </form>
             </div>
         );

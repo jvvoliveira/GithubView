@@ -11,16 +11,21 @@ exports[`initial test App snapshot 1`] = `
       onSubmit={[Function]}
     >
       <input
+        data-testid="input"
         onChange={[Function]}
         placeholder="nome do usuário no github"
         type="text"
       />
       <input
+        data-testid="searchButton"
         onClick={[Function]}
         type="submit"
         value="pesquisar"
       />
     </form>
   </div>
+  <h3>
+    Nenhum repositório encontrado
+  </h3>
 </div>
 `;
