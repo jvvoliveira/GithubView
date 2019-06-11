@@ -87,15 +87,5 @@ describe("initial test SearchBar", () => {
         expect(input.value).toBe('jvvoliveira');
         
     });
-    // it('should call pesquisar() when press button', () =>{
-
-    //     // const { getByText, getByTestId, container, asFragment } = render(
-    //     //     <SearchBar />
-    //     // )
-    //     // fireEvent.click(getByTestId("searchButton"));
-
-    //     // expect(SearchBar.pesquisar).toBeCalledTimes(1);
-
-    // });
 });
 
