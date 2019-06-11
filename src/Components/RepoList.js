@@ -4,7 +4,7 @@ import Repo from './Repo';
 class RepoList extends Component {
 
     render() {
-        if(this.props.repos.length != 0){
+        if(this.props.repos.length !== 0){
         return(
             this.props.repos.map(repo => {
                 return (

@@ -73,7 +73,7 @@ describe("initial test SearchBar", () => {
         const tree = renderer.create(<SearchBar></SearchBar>).toJSON();
         expect(tree).toMatchSnapshot();
     });
-    it('should write', () => {
+    it('should write and make search', () => {
         const { getByText, getByTestId, container, asFragment } = render(
             <SearchBar />
         )
@@ -81,12 +81,10 @@ describe("initial test SearchBar", () => {
         const input = getByTestId('input');
         const button = getByTestId('searchButton');
 
-        console.log(fireEvent.change(input, {target: {value: 'jvvoliveira'}}));
-        console.log(fireEvent.click(button));
+        fireEvent.change(input, {target: {value: 'jvvoliveira'}});
+        fireEvent.click(button);
 
-        // expect(input.getAttribute('value')).toHaveTextContent(/jvvoliveira/i);
-        expect(input.innerHTML).toBe('jvvoliveira');
-        console.log(input);
+        expect(input.value).toBe('jvvoliveira');
         
     });
     // it('should call pesquisar() when press button', () =>{
