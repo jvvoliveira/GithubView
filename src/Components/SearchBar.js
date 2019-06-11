@@ -15,7 +15,6 @@ export const _pesquisar = async (event, setRepos, usuario, request = fetch) => {
     }
 }
 
-
 //componente funcional
 export default (props) => {
     const [usuario, setUsuario] = useState();

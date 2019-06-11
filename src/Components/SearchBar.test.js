@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SearchBar from './SearchBar';
+import SearchBar, { _pesquisar } from './SearchBar';
 import TestRenderer from 'react-test-renderer';
 import renderer from 'react-test-renderer';
 import { request } from 'http';
@@ -22,14 +22,13 @@ describe("initial test SearchBar", () => {
     });
     // it('should take public repos by a github user', (done) => {
     //     const setRepos = jest.fn(); //mock de função
-    //     const testRenderer = TestRenderer.create(
-    //         <SearchBar setRepos={setRepos}></SearchBar>
-    //     );
+    //     const { getByText, getByTestId, asFragment, container} = render(
+    //         <SearchBar setRepos={setRepos}/>
+    //     )
 
-    //     let searchBar = testRenderer.getInstance();
-    //     const usuario = "jvvoliveira";
-    //     searchBar.setState({ usuario });
-    //     expect(searchBar.state.usuario).toEqual("jvvoliveira");
+    //     const input = getByTestId('input')
+    //     fireEvent.change(input, {target:{value: 'jvvoliveira'}})
+    //     expect(input.value).toBe("jvvoliveira");
 
     //     const event = {
     //         //propriedade que não faz nada, apenas para ser chamada no método de pesquisar e não dar undefined
@@ -61,7 +60,7 @@ describe("initial test SearchBar", () => {
     //     };
     //     async function test() {
     //         try {
-    //             await searchBar.pesquisar(event, request);
+    //             await searchBar.pesquisar(event, setRepos, usuario.value, request);
     //             expect(setRepos).toBeCalled();
     //         } catch (error) {
     //             console.log("await devolveu reject da promisse");
@@ -74,18 +73,71 @@ describe("initial test SearchBar", () => {
         expect(tree).toMatchSnapshot();
     });
     it('should write and make search', () => {
-        const { getByText, getByTestId, container, asFragment } = render(
+        const constPesquisa = jest.fn();
+
+        const { getByText, getByTestId, asFragment, container } = render(
             <SearchBar />
         )
 
-        const input = getByTestId('input');
-        const button = getByTestId('searchButton');
+        const input = getByTestId('input')
+        const button = getByTestId('searchButton')
+        button.onclick = constPesquisa;
 
-        fireEvent.change(input, {target: {value: 'jvvoliveira'}});
-        fireEvent.click(button);
+        fireEvent.change(input, { target: { value: 'jvvoliveira' } })
 
-        expect(input.value).toBe('jvvoliveira');
-        
+        waitForElement(() => fireEvent.click(button))
+
+        expect(input.value).toBe('jvvoliveira')
+        expect(constPesquisa).toBeCalledTimes(1)
     });
+    // it('should returned repos', () =>{
+    //     const{getByTestId} = render( <SearchBar /> )
+
+    //     const input = getByTestId('input')
+    //     button.onclick = constPesquisa;
+
+    //     fireEvent.change(input, { target: { value: 'jvvoliveira' } })
+    //     fireEvent.keyPress(input, {key:13});
+
+
+
+    // });
+    it('should ', async () => {
+        const event = { preventDefault: jest.fn() }
+        const setRepos = jest.fn()
+        const json = () => {
+            return new Promise((resolve) => {
+                resolve('mock user');
+            })
+        }
+        const request = () => {
+            return new Promise((resolve) => {
+                resolve({ json, status: 200 });
+            })
+        }
+
+        await _pesquisar(event, setRepos, 'usuario', request)
+        expect(event.preventDefault).toBeCalled();
+        expect(setRepos).toBeCalledWith('mock user')
+    })
+
+    it('should ', async () => {
+        const event = { preventDefault: jest.fn() }
+        const setRepos = jest.fn()
+        const json = () => {
+            return new Promise((resolve) => {
+                resolve('mock user');
+            })
+        }
+        const request = () => {
+            return new Promise((resolve) => {
+                resolve({ json, status: 404 });
+            })
+        }
+
+        await _pesquisar(event, setRepos, 'usuario', request)
+        expect(event.preventDefault).toBeCalled();
+        expect(setRepos).toBeCalledWith([])
+    })
 });
 
