@@ -20,54 +20,6 @@ describe("initial test SearchBar", () => {
         ReactDOM.render(<SearchBar />, div);
         ReactDOM.unmountComponentAtNode(div);
     });
-    // it('should take public repos by a github user', (done) => {
-    //     const setRepos = jest.fn(); //mock de função
-    //     const { getByText, getByTestId, asFragment, container} = render(
-    //         <SearchBar setRepos={setRepos}/>
-    //     )
-
-    //     const input = getByTestId('input')
-    //     fireEvent.change(input, {target:{value: 'jvvoliveira'}})
-    //     expect(input.value).toBe("jvvoliveira");
-
-    //     const event = {
-    //         //propriedade que não faz nada, apenas para ser chamada no método de pesquisar e não dar undefined
-    //         preventDefault: () => { }
-
-    //     }
-
-    //     //fazer promise dentro de promise
-    //     const request = () => {
-    //         return new Promise((resolve, reject) => {
-    //             resolve(() => {
-    //                 return {
-    //                     json: () => {
-    //                         return new Promise((resolve, reject) => {
-    //                             resolve(() => {
-    //                                 return {
-    //                                     name: 'name',
-    //                                     description: 'description',
-    //                                     link: 'link',
-    //                                     language: 'language'
-    //                                 };
-    //                             });
-    //                         });
-    //                     }
-    //                 }
-
-    //             });
-    //         });
-    //     };
-    //     async function test() {
-    //         try {
-    //             await searchBar.pesquisar(event, setRepos, usuario.value, request);
-    //             expect(setRepos).toBeCalled();
-    //         } catch (error) {
-    //             console.log("await devolveu reject da promisse");
-    //         }
-    //     }
-    //     test();
-    // });
     it('snapshot view public repos', () => {
         const tree = renderer.create(<SearchBar></SearchBar>).toJSON();
         expect(tree).toMatchSnapshot();
@@ -90,18 +42,6 @@ describe("initial test SearchBar", () => {
         expect(input.value).toBe('jvvoliveira')
         expect(constPesquisa).toBeCalledTimes(1)
     });
-    // it('should returned repos', () =>{
-    //     const{getByTestId} = render( <SearchBar /> )
-
-    //     const input = getByTestId('input')
-    //     button.onclick = constPesquisa;
-
-    //     fireEvent.change(input, { target: { value: 'jvvoliveira' } })
-    //     fireEvent.keyPress(input, {key:13});
-
-
-
-    // });
     it('should ', async () => {
         const event = { preventDefault: jest.fn() }
         const setRepos = jest.fn()
