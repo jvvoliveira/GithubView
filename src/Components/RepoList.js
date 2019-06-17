@@ -4,18 +4,24 @@ import Repo from './Repo';
 class RepoList extends Component {
 
     render() {
-        if(this.props.repos.length !== 0){
-        return(
-            this.props.repos.map(repo => {
+        if (this.props.repos !== undefined) {
+            if (this.props.repos.length !== 0) {
                 return (
-                    <Repo name={repo.name} link={repo.html_url} language={repo.language}
-                        description={repo.description}></Repo>
+                    this.props.repos.map(repo => {
+                        return (
+                            <Repo name={repo.name} link={repo.html_url} language={repo.language}
+                                description={repo.description}></Repo>
+                        );
+                    })
                 );
-            })
-        );
+            } else {
+                return (
+                    <h3>Nenhum repositório encontrado</h3>
+                );
+            }
         }else{
-            return(
-                <h3>Nenhum repositório encontrado</h3>
+            return (
+                <h3>Nenhum repositório</h3>
             );
         }
     }

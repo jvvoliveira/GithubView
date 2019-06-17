@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import './SearchBar.css';
 
 //atenção na ordem dos parâmetros...primeiro é event, aquele de valor default é o último (caso não passado fica undefined)
-export const _pesquisar = async (event, setRepos, usuario, request = fetch) => {
+export const _pesquisar = async (event, setRepos, setUsuario, usuario, request = fetch) => {
     event.preventDefault();
     let url = `https://api.github.com/users/${usuario}/repos`;
     const response = await request(url);
     const json = await response.json();
-    console.log(response);
+    console.log(json);
     if (response.status === 200) {
         setRepos(json);
+        setUsuario(json[0].owner);
     } else {
         setRepos([]);
+        setUsuario({});
     }
 }
 
@@ -19,7 +21,7 @@ export const _pesquisar = async (event, setRepos, usuario, request = fetch) => {
 export default (props) => {
     const [usuario, setUsuario] = useState();
     const pesquisar = (event) => {
-        _pesquisar(event, props.setRepos, usuario)
+        _pesquisar(event, props.setRepos, props.setUsuario, usuario)
     }
     return (
         <div className="search">

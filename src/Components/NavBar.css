@@ -1,0 +1,11 @@
+.navList{
+    background-color: black;
+    padding: 25px;
+}
+.item{
+    display: inline;
+    margin: 5px;
+}
+Link{
+    color: white;
+}
