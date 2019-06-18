@@ -10,7 +10,9 @@ export const _pesquisar = async (event, setRepos, setUsuario, usuario, request =
     console.log(json);
     if (response.status === 200) {
         setRepos(json);
-        setUsuario(json[0].owner);
+        if (json[0]) {
+            setUsuario(json[0].owner);
+        }
     } else {
         setRepos([]);
         setUsuario({});

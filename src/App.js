@@ -34,7 +34,7 @@ class App extends Component {
           <BrowserRouter>
             <NavBar />
             <SearchBar setRepos={this.setRepos} setUsuario={this.setUsuario}/>
-            <Router repos={this.state.repos} repos={this.state.repos} usuario={this.state.usuario}/>
+            <Router repos={this.state.repos} usuario={this.state.usuario}/>
           </BrowserRouter>
         </div>
       </div>

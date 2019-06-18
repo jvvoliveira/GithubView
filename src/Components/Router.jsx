@@ -7,7 +7,8 @@ import RepoList from './RepoList'
 export default (props) => {
     return (
         <Switch>
-            <Route path='/' exact={true} component={() => <Perfil usuario={props.usuario} />}
+            <Route path='/' exact={true} 
+                component={() => <Perfil usuario={props.usuario} />}
             ></Route>
             <Route path='/repositorios'
                 component={() => <RepoList repos={props.repos} />}
