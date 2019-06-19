@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import './Perfil.css'
+import { loadingContext } from '../App';
+
 export default (props) => {
 
     const [usuario, setUsuario] = useState(undefined)
+    const {showLoading, hideLoading} = useContext(loadingContext)
 
-    const _pesquisar = async (url, request = fetch) => {
+    const pesquisar = async (url, request = fetch) => {
         const response = await request(url);
         const json = await response.json();
         if (response.status == 200) {
@@ -16,8 +19,12 @@ export default (props) => {
         }
     }
     useEffect(() => {
-        if (props.usuario.url)
-            _pesquisar(props.usuario.url)
+        if (props.usuario.url) {
+            alert('useEffect chamado')
+            showLoading('Carregando perfil do usuário...')
+            pesquisar(props.usuario.url)
+            hideLoading()
+        }
     }, []); //useEffect executando apenas na montagem inicial
 
     if (usuario !== undefined) {
@@ -39,8 +46,8 @@ export default (props) => {
         )
     } else {
         return (
-            <h2>Sem usuário ou
-                <br />sem repositórios públicos</h2>
+            <h2>Sem usuário ou<br />
+                sem repositórios públicos</h2>
         )
     }
 }
