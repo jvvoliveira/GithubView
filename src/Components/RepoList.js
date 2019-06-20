@@ -1,30 +1,23 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import Repo from './Repo';
+import { loadingContext } from '../App';
 
-class RepoList extends Component {
+export default () => {
 
-    render() {
-        if (this.props.repos !== undefined) {
-            if (this.props.repos.length !== 0) {
+    const { repos } = useContext(loadingContext);
+
+    if (repos.length !== 0) {
+        return (
+            repos.map(repo => {
                 return (
-                    this.props.repos.map(repo => {
-                        return (
-                            <Repo name={repo.name} link={repo.html_url} language={repo.language}
-                                description={repo.description}></Repo>
-                        );
-                    })
+                    <Repo name={repo.name} link={repo.html_url} language={repo.language}
+                        description={repo.description}></Repo>
                 );
-            } else {
-                return (
-                    <h3>Nenhum repositório encontrado</h3>
-                );
-            }
-        }else{
-            return (
-                <h3>Nenhum repositório</h3>
-            );
-        }
+            })
+        );
+    } else {
+        return (
+            <h3>Nenhum repositório encontrado</h3>
+        );
     }
 }
-
-export default RepoList;

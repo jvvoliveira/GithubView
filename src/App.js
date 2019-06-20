@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './App.css'
-import SearchBar from './Components/SearchBar'
 import NavBar from './Components/NavBar'
 import Router from './Components/Router'
 import { BrowserRouter } from 'react-router-dom'
@@ -22,13 +21,8 @@ class App extends Component {
 
     this.state = {
       repos: [],
-      usuario: {},
-      loading: false,
-      message: null
+      usuario: undefined,
     }
-
-    this.setRepos = this.setRepos.bind(this);
-    this.setUsuario = this.setUsuario.bind(this);
   }
 
   showLoading = message => {
@@ -40,23 +34,25 @@ class App extends Component {
 
   hideLoading = () => { this.setState({ loading: false }) }
 
-  setRepos(repos) {
-    this.setState({ repos });
+  setRepos = (repos) => {
+    this.setState({ repos })
   }
 
-  setUsuario(usuario) {
-    this.setState({ usuario });
+  setUsuario = (usuario) => {
+    this.setState({ usuario })
   }
 
 
   //passando função como prop pro filho...uma maneira de fazer comunicação
   render() {
-    const { showLoading, hideLoading } = this
+    const { showLoading, hideLoading, setRepos, setUsuario } = this
 
     const value = {
       ...this.state,
       showLoading,
-      hideLoading
+      hideLoading,
+      setUsuario,
+      setRepos
     }
 
     return (
@@ -64,10 +60,9 @@ class App extends Component {
         <div>
           <BrowserRouter>
             <loadingContext.Provider value={value}>
-                <NavBar />
-                <SearchBar setRepos={this.setRepos} setUsuario={this.setUsuario}/>
-                <Loading/>
-                <Router repos={this.state.repos} usuario={this.state.usuario}/>
+              <NavBar />
+              <Loading />
+              <Router />
             </loadingContext.Provider>
           </BrowserRouter>
         </div>

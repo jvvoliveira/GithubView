@@ -1,3 +1,7 @@
 .search{
-    text-align: center;
+    display: inline-block;
+    float: right;
+}
+#field{
+    width: 300px;
 }
