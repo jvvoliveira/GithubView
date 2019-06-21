@@ -7,7 +7,7 @@ import Loading from './Components/Loading'
 
 
 export const loadingContext = React.createContext({
-  loading: true,
+  loading: false,
   message: null,
   showLoading: message => { },
   hideLoading: () => { }
@@ -20,9 +20,9 @@ class App extends Component {
     super(props);
 
     this.state = {
-      repos: {data:[], status: null},
-      usuario: {data:undefined, status: null},
-      loading: false, 
+      repos: { data: [], status: null },
+      usuario: { data: undefined, status: null },
+      loading: false,
       message: null
     }
   }
@@ -30,19 +30,21 @@ class App extends Component {
   showLoading = message => {
     this.setState({
       loading: true,
-      message,
+      message
     })
   }
 
-  hideLoading = () => { this.setState({ loading: false }) }
+  hideLoading = () => { 
+    this.setState({ loading: false }) 
+  }
 
   setRepos = (data, status) => {
-    const repos = {data, status}
+    const repos = { data, status }
     this.setState({ repos })
   }
 
   setUsuario = (data, status) => {
-    const usuario = {data, status}
+    const usuario = { data, status }
     this.setState({ usuario })
   }
 
