@@ -14,13 +14,13 @@ export const _pesquisar = (event, showLoading, hideLoading, nomeUsuario, setUsua
         Promise.all([response[0].json(), response[1].json()]).then((values) => {
             console.log(values[0])
             console.log(values[1])
-            if (values[0].message != 'Not Found') {
+            if (!values[0].message) {
                 setUsuario(values[0], 'OK')
             } else {
                 setUsuario(null, values[0].message)
             }
 
-            if (values[1].message != 'Not Found') {
+            if (!values[1].message) {
                 setRepos(values[1], 'OK')
             } else {
                 setRepos([], values[0].message)
