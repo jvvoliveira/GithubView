@@ -9,10 +9,20 @@ export const _pesquisar = (event, nomeUsuario, setUsuario, setRepos, request = f
     const urlRepos = `https://api.github.com/users/${nomeUsuario}/repos`;
     const urlUsuario = `https://api.github.com/users/${nomeUsuario}`;
 
-    Promise.all([request(urlUsuario), request(urlRepos)]).then((values) => {
-        Promise.all([values[0].json(), values[1].json()]).then((valores) => {
-            setUsuario(valores[0])
-            setRepos(valores[1])
+    Promise.all([request(urlUsuario), request(urlRepos)]).then((response) => {
+        Promise.all([response[0].json(), response[1].json()]).then((values) => {
+            if(values[0].message != 'Not Found'){
+                setUsuario(values[0], 'OK')
+            }else{
+                setUsuario(null, 'Not Found')
+            }
+            
+            if(values[1].message != 'Not Found'){
+                setRepos(values[1], 'OK')
+            }else{
+                setRepos([], values[1].message)
+            }
+            
         })
     })
 }

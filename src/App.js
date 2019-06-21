@@ -7,7 +7,7 @@ import Loading from './Components/Loading'
 
 
 export const loadingContext = React.createContext({
-  loading: false,
+  loading: true,
   message: null,
   showLoading: message => { },
   hideLoading: () => { }
@@ -20,30 +20,32 @@ class App extends Component {
     super(props);
 
     this.state = {
-      repos: [],
-      usuario: undefined,
+      repos: {data:[], status: null},
+      usuario: {data:undefined, status: null},
+      loading: false, 
+      message: null
     }
   }
 
   showLoading = message => {
     this.setState({
       loading: true,
-      message
+      message,
     })
   }
 
   hideLoading = () => { this.setState({ loading: false }) }
 
-  setRepos = (repos) => {
+  setRepos = (data, status) => {
+    const repos = {data, status}
     this.setState({ repos })
   }
 
-  setUsuario = (usuario) => {
+  setUsuario = (data, status) => {
+    const usuario = {data, status}
     this.setState({ usuario })
   }
 
-
-  //passando função como prop pro filho...uma maneira de fazer comunicação
   render() {
     const { showLoading, hideLoading, setRepos, setUsuario } = this
 
