@@ -20,14 +20,10 @@ describe("initial test SearchBar", () => {
         ReactDOM.render(<SearchBar />, div);
         ReactDOM.unmountComponentAtNode(div);
     });
-    it('snapshot view public repos', () => {
-        const tree = renderer.create(<SearchBar></SearchBar>).toJSON();
-        expect(tree).toMatchSnapshot();
-    });
     it('should write and make search', () => {
         const constPesquisa = jest.fn();
 
-        const { getByText, getByTestId, asFragment, container } = render(
+        const { getByTestId } = render(
             <SearchBar />
         )
 
@@ -42,42 +38,57 @@ describe("initial test SearchBar", () => {
         expect(input.value).toBe('jvvoliveira')
         expect(constPesquisa).toBeCalledTimes(1)
     });
-    it('should ', async () => {
+    it('should search user and repos in the API', async () => {
         const event = { preventDefault: jest.fn() }
+        const showLoading = jest.fn()
+        const hideLoading = jest.fn()
+        const setUsuario = jest.fn()
         const setRepos = jest.fn()
         const json = () => {
             return new Promise((resolve) => {
-                resolve('mock user');
+                resolve({});
             })
         }
         const request = () => {
             return new Promise((resolve) => {
-                resolve({ json, status: 200 });
+                resolve({ json });
             })
         }
 
-        await _pesquisar(event, setRepos, 'usuario', request)
-        expect(event.preventDefault).toBeCalled();
-        expect(setRepos).toBeCalledWith('mock user')
-    })
+        await _pesquisar(event, showLoading, hideLoading, 
+            'nomeUsuario', setUsuario, setRepos, request)
 
-    it('should ', async () => {
+        expect(event.preventDefault).toBeCalled()
+        expect(showLoading).toBeCalled()
+        expect(hideLoading).toBeCalled()
+        expect(setUsuario).toBeCalledWith({}, 'OK')
+        expect(setRepos).toBeCalledWith({}, 'OK')
+    });
+    it('should search user and repos in the API but not found', async () => {
         const event = { preventDefault: jest.fn() }
+        const showLoading = jest.fn()
+        const hideLoading = jest.fn()
+        const setUsuario = jest.fn()
         const setRepos = jest.fn()
         const json = () => {
             return new Promise((resolve) => {
-                resolve('mock user');
+                resolve({message: 'Not Found'});
             })
         }
         const request = () => {
             return new Promise((resolve) => {
-                resolve({ json, status: 404 });
+                resolve({ json });
             })
         }
 
-        await _pesquisar(event, setRepos, 'usuario', request)
-        expect(event.preventDefault).toBeCalled();
-        expect(setRepos).toBeCalledWith([])
-    })
+        await _pesquisar(event, showLoading, hideLoading, 
+            'nomeUsuario', setUsuario, setRepos, request)
+
+        expect(event.preventDefault).toBeCalled()
+        expect(showLoading).toBeCalled()
+        expect(hideLoading).toBeCalled()
+        expect(setUsuario).toBeCalledWith(null, 'Not Found')
+        expect(setRepos).toBeCalledWith([], 'Not Found')
+    });
 });
 

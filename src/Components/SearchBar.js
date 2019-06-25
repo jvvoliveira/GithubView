@@ -1,19 +1,18 @@
 import React, { useContext, useState } from 'react';
 import './SearchBar.css';
 import { loadingContext } from '../App';
+import { async } from 'q';
 
 //atenção na ordem dos parâmetros...primeiro é event, aquele de valor default é o último (caso não passado fica undefined)
-export const _pesquisar = (event, showLoading, hideLoading, nomeUsuario, setUsuario, setRepos, request = fetch) => {
+export const _pesquisar = async (event, showLoading, hideLoading, nomeUsuario, setUsuario, setRepos, request = fetch) => {
     event.preventDefault()
     showLoading('Carregando...')
 
     const urlRepos = `https://api.github.com/users/${nomeUsuario}/repos`;
     const urlUsuario = `https://api.github.com/users/${nomeUsuario}`;
 
-    Promise.all([request(urlUsuario), request(urlRepos)]).then((response) => {
-        Promise.all([response[0].json(), response[1].json()]).then((values) => {
-            console.log(values[0])
-            console.log(values[1])
+    await Promise.all([request(urlUsuario), request(urlRepos)]).then((response) => {
+        Promise.all([response[0].json(), response[1].json()]).then((values) => {  
             if (!values[0].message) {
                 setUsuario(values[0], 'OK')
             } else {
