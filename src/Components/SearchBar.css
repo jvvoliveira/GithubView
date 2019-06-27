@@ -2,6 +2,9 @@
     display: inline-block;
     float: right;
 }
-#field{
+#field-input{
     width: 300px;
+}
+.error{
+    color: azure
 }
