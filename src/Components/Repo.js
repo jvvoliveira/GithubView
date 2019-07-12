@@ -1,18 +1,16 @@
-import React, { Component } from 'react';
-import './Repo.css';
-class Repo extends Component {
+import React from "react";
+import styles from "./Repo.module.scss";
 
-    render() {
-        return (
-            <div className="repo">
-                <h3>{this.props.name}</h3>
-                <p>{this.props.description}</p>
-                <a href={this.props.link} target="_blank">repositório</a>
-                <p>Linguagem: {this.props.language}</p>
-                <br></br>
-            </div>
-        );
-    }
-}
+const Repo = props => {
+  return (
+    <a className={styles.repositorio} href={props.link} target="_blank">
+      <h3>{props.name}</h3>
+      <div className={styles.text}>
+        <p>{props.description}</p>
+      </div>
+      <p>{props.language}</p>
+    </a>
+  );
+};
 
 export default Repo;

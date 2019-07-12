@@ -1,13 +1,21 @@
-import React from 'react'
-import styles from './NavBar.module.scss'
-import SearchBar from './SearchBar'
-import { Link } from 'react-router-dom'
+import React from "react";
+import styles from "./NavBar.module.scss";
+import SearchBar from "./SearchBar";
+import { Link } from "react-router-dom";
 export default () => {
-    return (
-        <ul className={styles.navList}>
-            <li className={styles.item}><Link to='/'>Perfil</Link></li>
-            <li className={styles.item}><Link to='/repositorios'>Repositórios</Link></li>
-            <SearchBar/>
-        </ul>
-    )
-}
+  return (
+    <div className={styles.navList}>
+      <div className={styles.wrapper}>
+        <Link className={styles.item} to="/">
+          Perfil
+        </Link>
+        <Link className={styles.item} to="/repositorios">
+          Repositórios
+        </Link>
+      </div>
+      <div className={styles.wrapper2}>
+        <SearchBar />
+      </div>
+    </div>
+  );
+};

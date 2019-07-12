@@ -1,17 +1,24 @@
-.navList{
-    background-color: black;
-    padding: 25px;
-}
-.item{
-    display: inline;
-    margin: 5px;
-
-    a{
-        color: white;
-        text-decoration: none;
-        font-size: 20px;
+.navList {
+  display: flex;
+  flex-direction: row;
+  background-color: black;
+  padding: 25px;
+  .wrapper {
+    display: flex;
+    flex: 2 2;
+    flex-direction: row;
+    justify-content: space-around;
+    .item {
+      text-transform: uppercase;
+      text-decoration: none;
+      color: white;
+      &:focus,
+      &:hover {
+        color: aqua;
+      }
     }
-    a:hover{
-        color: skyblue;
-    }
+  }
+  .wrapper2 {
+    flex: 8 8;
+  }
 }

@@ -4,14 +4,14 @@ import Perfil from './Perfil'
 import RepoList from './RepoList'
 
 
-export default (props) => {
+export default () => {
     return (
         <Switch>
             <Route path='/' exact={true} 
-                component={() => <Perfil usuario={props.usuario} />}
+                component={() => <Perfil />}
             ></Route>
             <Route path='/repositorios'
-                component={() => <RepoList repos={props.repos} />}
+                component={() => <RepoList />}
             ></Route>
         </Switch>
     )
