@@ -3,3 +3,21 @@
     justify-content: space-around;
     flex-wrap: wrap;
 }
+.wrapper_btns{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    button{
+        background-color: black;
+        color: white;
+        border-color: black;
+        text-transform: uppercase;
+        &:focus,
+        &:hover{
+            opacity: 0.7;
+            color: aqua;
+            cursor: pointer;
+        }
+    }
+}
