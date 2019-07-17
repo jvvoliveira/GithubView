@@ -3,6 +3,11 @@
   flex-direction: row;
   background-color: black;
   padding: 25px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: auto;
   .wrapper {
     display: flex;
     flex: 2 2;
@@ -20,5 +25,8 @@
   }
   .wrapper2 {
     flex: 8 8;
+    margin-right: 40px;
+    display: flex;
+    justify-content: flex-end;
   }
 }

@@ -1,23 +1,33 @@
-.lista{
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.lista_infinita {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
-.wrapper_btns{
-    margin-top: 10px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    button{
-        background-color: black;
-        color: white;
-        border-color: black;
-        text-transform: uppercase;
-        &:focus,
-        &:hover{
-            opacity: 0.7;
-            color: aqua;
-            cursor: pointer;
-        }
+.viewMore {
+  margin: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  &:hover {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+}
+.wrapper_btns {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  button {
+    background-color: black;
+    color: white;
+    border-color: black;
+    text-transform: uppercase;
+    &:focus,
+    &:hover {
+      opacity: 0.7;
+      color: aqua;
+      cursor: pointer;
     }
+  }
 }

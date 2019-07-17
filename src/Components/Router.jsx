@@ -1,8 +1,7 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 import Perfil from './Perfil'
 import RepoList from './RepoList'
-
 
 export default () => {
     return (
@@ -13,6 +12,7 @@ export default () => {
             <Route path='/repositorios'
                 component={() => <RepoList />}
             ></Route>
+            <Redirect to="/" />
         </Switch>
     )
 }

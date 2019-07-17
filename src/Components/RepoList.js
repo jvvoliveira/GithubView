@@ -3,11 +3,52 @@ import Repo from "./Repo";
 import { loadingContext } from "../App";
 import styles from "./RepoList.module.scss";
 
-export default () => {
-  const { repos, previousPage, nextPage} = useContext(
-    loadingContext
-  );
+const { repos, page, usuario, setRepos, setPage, repos_max } = useContext(
+  loadingContext
+);
 
+export const moreItens = (usuario, page, setRepos, repos, setPage) => {
+  fetch(
+    `https://api.github.com/users/${
+      usuario.data.login
+    }/repos?per_page=8&page=${page}`
+  )
+    .then(response => response.json())
+    .then(value => {
+      if (!value.message) {
+        setRepos([...repos.data, ...value], "OK");
+      } else {
+        setRepos([], value.message);
+      }
+    });
+  setPage(page + 1);
+};
+
+const _moreItens = () => {
+  moreItens(usuario, page, setRepos, repos, setPage);
+};
+
+export const viewMore = pages => {
+  if (page <= pages) {
+    return (
+      <div className={styles.viewMore} onClick={_moreItens}>
+        <h3>Ver mais</h3>
+      </div>
+    );
+  } else {
+    return (
+      <div className={styles.viewMore}>
+        <h3>Esses são todos os repositórios públicos</h3>
+      </div>
+    );
+  }
+};
+
+export default () => {
+  //8 repositórios por página
+  const _viewMore = (pages = repos_max / 8) => {
+    viewMore(pages);
+  };
   const list = repos.data.map(repo => {
     return (
       <Repo
@@ -15,6 +56,7 @@ export default () => {
         link={repo.html_url}
         language={repo.language}
         description={repo.description}
+        key={repo.html_url}
       />
     );
   });
@@ -22,12 +64,9 @@ export default () => {
   if (repos.status === "OK") {
     if (repos.data.length !== 0) {
       return (
-        <div>
-          <div className={styles.lista}>{list}</div>
-          <div className={styles.wrapper_btns}>
-            <button onClick={previousPage}>Anterior</button>
-            <button onClick={nextPage}>Próxima</button>
-          </div>
+        <div className={styles.lista_infinita}>
+          {list}
+          {_viewMore()}
         </div>
       );
     } else {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./App.css";
+import styles from "./App.module.scss";
 import NavBar from "./Components/NavBar";
 import Router from "./Components/Router";
 import { BrowserRouter } from "react-router-dom";
@@ -9,6 +9,7 @@ export const loadingContext = React.createContext({
   loading: false,
   message: null,
   page: 1,
+  repos_max: undefined,
   showLoading: message => {},
   hideLoading: () => {}
 });
@@ -21,10 +22,15 @@ class App extends Component {
       repos: { data: [], status: null },
       usuario: { data: undefined, status: null },
       page: 1,
+      repos_max: undefined,
       loading: false,
       message: null
     };
   }
+
+  setPage = page => this.setState({ page });
+
+  setRepos_max = repos_max => this.setState({ repos_max });
 
   showLoading = message => {
     this.setState({
@@ -46,38 +52,6 @@ class App extends Component {
     const usuario = { data, status };
     this.setState({ usuario });
   };
-  previousPage = () => {
-    if(this.state.page > 1){
-      this.setState({ page: this.state.page - 1 }, () => {
-        fetch(
-          `https://api.github.com/users/${this.state.usuario.data.login}/repos?per_page=8&page=${this.state.page}`
-        )
-          .then(response => response.json())
-          .then(value => {
-            if (!value.message) {
-              this.setRepos(value, "OK");
-            } else {
-              this.setRepos([], value.message);
-            }
-          });
-      });
-  }
-  };
-  nextPage = () => {
-    this.setState({ page: this.state.page + 1 }, () => {
-      fetch(
-        `https://api.github.com/users/${this.state.usuario.data.login}/repos?per_page=8&page=${this.state.page + 1}`
-      )
-        .then(response => response.json())
-        .then(value => {
-          if (!value.message) {
-            this.setRepos(value, "OK");
-          } else {
-            this.setRepos([], value.message);
-          }
-        });
-    });
-  };
 
   render() {
     const {
@@ -85,8 +59,8 @@ class App extends Component {
       hideLoading,
       setRepos,
       setUsuario,
-      previousPage,
-      nextPage
+      setPage,
+      setRepos_max
     } = this;
 
     const value = {
@@ -95,8 +69,8 @@ class App extends Component {
       hideLoading,
       setUsuario,
       setRepos,
-      previousPage,
-      nextPage
+      setPage,
+      setRepos_max
     };
 
     return (
@@ -106,7 +80,9 @@ class App extends Component {
             <loadingContext.Provider value={value}>
               <NavBar />
               <Loading />
-              <Router />
+              <div className={styles.bodyItems}>
+                <Router/>
+              </div>
             </loadingContext.Provider>
           </BrowserRouter>
         </div>

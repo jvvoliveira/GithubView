@@ -6,7 +6,7 @@ export default () => {
   const { data, status } = useContext(loadingContext).usuario;
 
   if (data !== undefined) {
-    if (status == "OK") {
+    if (status === "OK") {
       return (
         <div className={styles.container}>
           <h1>{data.name ? data.name : data.login}</h1>
@@ -30,6 +30,6 @@ export default () => {
       return <h2>Usuário não encontrado</h2>;
     }
   } else {
-    return <h2>Pesquise por algum usuário que exista no GitHub</h2>;
+    return <h2>Pesquise por algum usuário GitHub</h2>;
   }
 };
