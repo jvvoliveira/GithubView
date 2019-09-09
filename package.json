@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "coverage": "npm t -- --coverage --watchAll=false"
+    "coverage": "npm t -- --coverage --watchAll=true"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,6 +38,6 @@
     ]
   },
   "devDependencies": {
-    "@testing-library/react": "^8.0.1"
+    "@testing-library/react": "^8.0.5"
   }
 }

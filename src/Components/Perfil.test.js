@@ -1,7 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom';
-import Perfil, { pesquisar } from './Perfil'
-import renderer from 'react-test-renderer';
+import Perfil from './Perfil'
 import { loadingContext } from '../App';
 import {
     render,
@@ -54,19 +52,26 @@ const PerfilWithContextWithUser = () => {
 
 
 describe('initial test Perfil', () => {
-    it('should renders without crashing without user', () => {
-        const div = document.createElement('div')
-        ReactDOM.render(<PerfilWithContextWithoutUser />, div)
-        ReactDOM.unmountComponentAtNode(div)
+    it('should renders without user', () => {
+        const { getByTestId } = render(<PerfilWithContextWithoutUser/>);
+        const nodeMessage = getByTestId('messageInitial');
+        expect(nodeMessage.innerHTML).toEqual('Pesquise por algum usuário GitHub');
+        expect(nodeMessage).toBeDefined();
     });
     it('should renders with user not found', () => {
-        const div = document.createElement('div')
-        ReactDOM.render(<PerfilWithContextWithUserNotFound />, div)
-        ReactDOM.unmountComponentAtNode(div)
+        const { getByTestId } = render(<PerfilWithContextWithUserNotFound/>);
+        const nodeMessage = getByTestId('messageNotFound');
+        expect(nodeMessage.innerHTML).toEqual('Usuário não encontrado');
+        expect(nodeMessage).toBeDefined();
     });
-    it('should renders with user not found', () => {
-        const div = document.createElement('div')
-        ReactDOM.render(<PerfilWithContextWithUser />, div)
-        ReactDOM.unmountComponentAtNode(div)
+    it('should renders with user', () => {
+        const { getByTestId } = render(<PerfilWithContextWithUser/>);
+        const nodeName = getByTestId('name');
+        const nodeBio = getByTestId('bio');
+        const nodeFollow = getByTestId('followers');
+
+        expect(nodeName.innerHTML).toEqual('teste');
+        expect(nodeBio.innerHTML).toEqual('Um teste');
+        expect(nodeFollow.innerHTML).toEqual('Seguidores: 5');
     });
 })

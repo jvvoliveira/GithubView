@@ -72,7 +72,7 @@ class App extends Component {
       setPage,
       setRepos_max
     };
-
+    
     return (
       <div className="App">
         <div>
@@ -81,7 +81,7 @@ class App extends Component {
               <NavBar />
               <Loading />
               <div className={styles.bodyItems}>
-                <Router/>
+                <Router />
               </div>
             </loadingContext.Provider>
           </BrowserRouter>

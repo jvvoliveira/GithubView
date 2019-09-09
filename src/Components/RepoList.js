@@ -3,10 +3,6 @@ import Repo from "./Repo";
 import { loadingContext } from "../App";
 import styles from "./RepoList.module.scss";
 
-const { repos, page, usuario, setRepos, setPage, repos_max } = useContext(
-  loadingContext
-);
-
 export const moreItens = (usuario, page, setRepos, repos, setPage) => {
   fetch(
     `https://api.github.com/users/${
@@ -24,11 +20,11 @@ export const moreItens = (usuario, page, setRepos, repos, setPage) => {
   setPage(page + 1);
 };
 
-const _moreItens = () => {
-  moreItens(usuario, page, setRepos, repos, setPage);
-};
 
-export const viewMore = pages => {
+export const viewMore = (page, pages, usuario, setRepos, repos, setPage) => {
+  const _moreItens = () => {
+    moreItens(usuario, page, setRepos, repos, setPage);
+  };
   if (page <= pages) {
     return (
       <div className={styles.viewMore} onClick={_moreItens}>
@@ -45,10 +41,8 @@ export const viewMore = pages => {
 };
 
 export default () => {
-  //8 repositórios por página
-  const _viewMore = (pages = repos_max / 8) => {
-    viewMore(pages);
-  };
+  const { repos, page, usuario, setRepos, setPage, repos_max } = useContext(loadingContext);
+  let pages = repos_max / 8; //8 repositórios por página
   const list = repos.data.map(repo => {
     return (
       <Repo
@@ -66,7 +60,7 @@ export default () => {
       return (
         <div className={styles.lista_infinita}>
           {list}
-          {_viewMore()}
+          {viewMore(page, pages, usuario, setRepos, repos, setPage)}
         </div>
       );
     } else {
