@@ -1,7 +1,7 @@
 import React, {useContext} from 'react' 
 import './Loading.css'
 import Spinner from 'react-spinkit' 
-import { loadingContext } from '../App';
+import { loadingContext } from '../../App';
  
 export default () => { 
     const {loading, message} = useContext(loadingContext)

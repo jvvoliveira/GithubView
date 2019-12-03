@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import styles from "./Perfil.module.scss";
-import { loadingContext } from "../App";
+import { loadingContext } from "../../App";
 
-export default () => {
+const Perfil = () => {
   const { data, status } = useContext(loadingContext).usuario;
 
   if (data !== undefined) {
@@ -33,3 +33,5 @@ export default () => {
     return <h2 data-testid="messageInitial">Pesquise por algum usuário GitHub</h2>;
   }
 };
+
+export default Perfil;

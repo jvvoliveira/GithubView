@@ -1,8 +1,8 @@
 import React from "react";
 import styles from "./NavBar.module.scss";
-import SearchBar from "./SearchBar";
+import SearchBar from "../searchBar/SearchBar";
 import { Link } from "react-router-dom";
-export default () => {
+const Navbar =  () => {
   return (
     <div className={styles.navList}>
       <div className={styles.wrapper}>
@@ -19,3 +19,5 @@ export default () => {
     </div>
   );
 };
+
+export default Navbar;

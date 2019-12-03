@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styles from "./App.module.scss";
-import NavBar from "./Components/NavBar";
+import NavBar from "./Components/navBar/NavBar";
 import Router from "./Components/Router";
 import { BrowserRouter } from "react-router-dom";
-import Loading from "./Components/Loading";
+import Loading from "./Components/loading/Loading";
 
 export const loadingContext = React.createContext({
   loading: false,

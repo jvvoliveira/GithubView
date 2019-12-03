@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import Repo from "./Repo";
-import { loadingContext } from "../App";
+import Repo from "../Repo";
+import { loadingContext } from "../../../App";
 import styles from "./RepoList.module.scss";
 
 export const moreItens = (usuario, page, setRepos, repos, setPage) => {
@@ -40,7 +40,7 @@ export const viewMore = (page, pages, usuario, setRepos, repos, setPage) => {
   }
 };
 
-export default () => {
+const RepoList = () => {
   const { repos, page, usuario, setRepos, setPage, repos_max } = useContext(loadingContext);
   let pages = repos_max / 8; //8 repositórios por página
   const list = repos.data.map(repo => {
@@ -70,3 +70,5 @@ export default () => {
     return <h2>Repositórios não encontrados</h2>;
   }
 };
+
+export default RepoList;

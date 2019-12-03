@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { loadingContext } from '../App';
+import { loadingContext } from '../../App';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import styles from './SearchBar.module.scss';
 import * as yup from 'yup';
@@ -35,7 +35,7 @@ const validation = yup.object().shape({
     usuario: yup.string().required("Nenhum nome informado")
 })
 
-export default () => {
+const Searchbar = () => {
 
     const { showLoading, hideLoading, setUsuario, setRepos, setRepos_max, setPage } = useContext(loadingContext);
     const [nomeUsuario] = useState("");
@@ -60,3 +60,5 @@ export default () => {
         </div>
     );
 }
+
+export default Searchbar;
