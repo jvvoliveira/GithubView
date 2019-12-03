@@ -49,7 +49,7 @@ const Searchbar = () => {
             <Formik initialValues={nomeUsuario} onSubmit={pesquisar} validationSchema={validation}>
                 <Form>
                     <div>
-                        <Field name="usuario" className={styles.field_input} data-testid="input" type="text" placeholder="nome do usuário no github" />
+                        <Field name="usuario" className={styles.field_input} data-testid="inputNomeUsuario" type="text" placeholder="nome do usuário no github" />
                         <Field data-testid="searchButton" type="submit" value="pesquisar" />
                     </div>
                     <div>
