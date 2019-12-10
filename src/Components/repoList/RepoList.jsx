@@ -1,13 +1,11 @@
 import React, { useContext } from "react";
-import Repo from "../Repo";
-import { loadingContext } from "../../../App";
+import Repo from "./repositorio/Repo";
+import { loadingContext } from "../../App";
 import styles from "./RepoList.module.scss";
 
 export const moreItens = (usuario, page, setRepos, repos, setPage) => {
   fetch(
-    `https://api.github.com/users/${
-      usuario.data.login
-    }/repos?per_page=8&page=${page}`
+    `https://api.github.com/users/${usuario.data.login}/repos?per_page=8&page=${page}`
   )
     .then(response => response.json())
     .then(value => {
@@ -20,12 +18,11 @@ export const moreItens = (usuario, page, setRepos, repos, setPage) => {
   setPage(page + 1);
 };
 
-
 export const viewMore = (page, pages, usuario, setRepos, repos, setPage) => {
   const _moreItens = () => {
     moreItens(usuario, page, setRepos, repos, setPage);
   };
-  if (page <= pages) {
+  if (page < pages) {
     return (
       <div className={styles.viewMore} onClick={_moreItens}>
         <h3>Ver mais</h3>
@@ -41,8 +38,14 @@ export const viewMore = (page, pages, usuario, setRepos, repos, setPage) => {
 };
 
 const RepoList = () => {
-  const { repos, page, usuario, setRepos, setPage, repos_max } = useContext(loadingContext);
-  let pages = repos_max / 8; //8 repositórios por página
+  const { repos, page, usuario, setRepos, setPage, repos_max } = useContext(
+    loadingContext
+  );
+  console.log(repos_max);
+  let pages = repos_max / 8;
+  if (repos_max % 8 > 0) {
+    pages++;
+  } //8 repositórios por página
   const list = repos.data.map(repo => {
     return (
       <Repo

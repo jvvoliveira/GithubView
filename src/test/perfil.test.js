@@ -1,4 +1,5 @@
 import React from "react";
+import moxios from "moxios";
 import {
   render,
   fireEvent,
@@ -9,20 +10,16 @@ import {
   waitForElementToBeRemoved
 } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
-import { mockAxios, restoreAxios } from "./mockAxios";
 import App from "../App";
 
-let axios = null;
-
-beforeAll(() => {
-  axios = mockAxios();
-});
-
-afterAll(() => {
-  restoreAxios();
+beforeEach(function() {
+  // import and pass your custom axios instance to this method
+  moxios.install();
 });
 
 afterEach(function() {
+  // import and pass your custom axios instance to this method
+  moxios.uninstall();
   cleanup();
 });
 
@@ -64,17 +61,14 @@ test("Renderizar perfil com usuário não encontrado", async () => {
 });
 
 test("Renderizar perfil com usuário correto", async () => {
-  axios.addMockResponse("https://api.github.com/users/jvvoliveira", {
-    status: "OK",
-    data: {
-      login: "jvvoliveira",
-      avatar_url: "https://avatars3.githubusercontent.com/u/48499490?v=4",
-      name: "joãoVictor",
-      location: "Recife, PE",
-      bio: "Fazendo teste com React Testing library",
-      public_repos: 50,
-      followers: 100
-    }
+  moxios.stubRequest("https://api.github.com/users/jvvoliveira", {
+    login: "jvvoliveira",
+    avatar_url: "https://avatars3.githubusercontent.com/u/48499490?v=4",
+    name: "joãoVictor",
+    location: "Recife, PE",
+    bio: "Fazendo teste com React Testing library",
+    public_repos: 50,
+    followers: 100
   });
 
   const container = render(<App />);
@@ -117,7 +111,7 @@ test("Renderizar perfil com usuário correto", async () => {
     container.getByTestId("dataCriacao")
   ]);
 
-  expect(nome).toEqual("joãoVictor");
+  expect(nome).toEqual("value", "joãoVictor");
   expect(foto).toHaveAttribute(
     "src",
     "https://avatars3.githubusercontent.com/u/48499490?v=4"

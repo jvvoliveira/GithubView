@@ -72,7 +72,7 @@ class App extends Component {
       setPage,
       setRepos_max
     };
-    
+
     return (
       <div className="App">
         <div>
