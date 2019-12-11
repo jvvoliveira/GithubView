@@ -1,5 +1,5 @@
 import React from "react";
-import moxios from "moxios";
+import nock from "nock";
 import {
   render,
   fireEvent,
@@ -12,14 +12,8 @@ import {
 import "@testing-library/jest-dom/extend-expect";
 import App from "../App";
 
-beforeEach(function() {
-  // import and pass your custom axios instance to this method
-  moxios.install();
-});
-
 afterEach(function() {
-  // import and pass your custom axios instance to this method
-  moxios.uninstall();
+  nock.cleanAll();
   cleanup();
 });
 
@@ -36,6 +30,18 @@ test("Renderizar perfil sem conteúdo", async () => {
 });
 
 test("Renderizar perfil com usuário não encontrado", async () => {
+  nock("https://api.github.com")
+    .get("/users/jvvoliveira")
+    .reply(404, {
+      message: "user not found",
+      status: 404
+    })
+    .get("/users/jvvoliveira/repos?per_page=8&page=1")
+    .reply(404, {
+      message: "user not found",
+      status: 404
+    });
+
   const container = render(<App />);
 
   const msgInitial = container.getByText("Pesquise por algum usuário GitHub");
@@ -47,7 +53,7 @@ test("Renderizar perfil com usuário não encontrado", async () => {
 
   act(() => {
     fireEvent.input(inputNomeUsuario, {
-      target: { value: "jjjjjjoooooooaaaaaooooo" }
+      target: { value: "jvvoliveira" }
     });
 
     fireEvent.click(searchButton);
@@ -61,16 +67,20 @@ test("Renderizar perfil com usuário não encontrado", async () => {
 });
 
 test("Renderizar perfil com usuário correto", async () => {
-  moxios.stubRequest("https://api.github.com/users/jvvoliveira", {
-    login: "jvvoliveira",
-    avatar_url: "https://avatars3.githubusercontent.com/u/48499490?v=4",
-    name: "joãoVictor",
-    location: "Recife, PE",
-    bio: "Fazendo teste com React Testing library",
-    public_repos: 50,
-    followers: 100
-  });
-
+  nock("https://api.github.com")
+    .get("/users/jvvoliveira")
+    .reply(200, {
+      login: "jvvoliveira",
+      name: "joãoVictor",
+      avatar_url: "https://avatars3.githubusercontent.com/u/48499490?v=4",
+      location: "Recife, PE",
+      bio: "Fazendo teste com React Testing library",
+      public_repos: 4,
+      followers: 100,
+      created_at: "2000-06-28T00:34:36Z"
+    })
+    .get("/users/jvvoliveira/repos?per_page=8&page=1")
+    .reply(200, []);
   const container = render(<App />);
 
   const [inputNomeUsuario, searchButton] = await waitForElement(() => [
@@ -86,13 +96,6 @@ test("Renderizar perfil com usuário correto", async () => {
   act(() => {
     fireEvent.click(searchButton);
   });
-  const [imagemPerfil, informacoesPerfil] = await waitForElement(() => [
-    container.getByTestId("imagemPerfil"),
-    container.getByTestId("informacoesPerfil")
-  ]);
-  // expect(imagemPerfil).toBeInTheDocument();
-  // expect(informacoesPerfil).toBeInTheDocument();
-
   const [
     nome,
     foto,
@@ -111,10 +114,49 @@ test("Renderizar perfil com usuário correto", async () => {
     container.getByTestId("dataCriacao")
   ]);
 
-  expect(nome).toEqual("value", "joãoVictor");
+  expect(nome.innerHTML).toEqual("joãoVictor");
   expect(foto).toHaveAttribute(
     "src",
     "https://avatars3.githubusercontent.com/u/48499490?v=4"
   );
-  expect(bio).toEqual("Fazendo teste com React Testing library");
+  expect(bio).toHaveTextContent("Fazendo teste com React Testing library");
+  expect(local).toHaveTextContent("Recife, PE");
+  expect(seguidores.innerHTML).toEqual("Seguidores: 100");
+  expect(reposPublicos).toHaveTextContent("Repositórios públicos: 4");
+  expect(dataCriacao).toHaveTextContent("Criado em: 2000-06-28T00:34:36Z");
+});
+
+test("Renderizar perfil com usuário sem name", async () => {
+  nock("https://api.github.com")
+    .get("/users/jvvoliveira")
+    .reply(200, {
+      login: "jvvoliveira",
+      //name
+      avatar_url: "https://avatars3.githubusercontent.com/u/48499490?v=4",
+      location: "Recife, PE",
+      bio: "Fazendo teste com React Testing library",
+      public_repos: 4,
+      followers: 100,
+      created_at: "2000-06-28T00:34:36Z"
+    })
+    .get("/users/jvvoliveira/repos?per_page=8&page=1")
+    .reply(200, []);
+  const container = render(<App />);
+
+  const [inputNomeUsuario, searchButton] = await waitForElement(() => [
+    container.getByPlaceholderText("nome do usuário no github"),
+    container.getByTestId("searchButton")
+  ]);
+
+  act(() => {
+    fireEvent.input(inputNomeUsuario, {
+      target: { value: "jvvoliveira" }
+    });
+  });
+  act(() => {
+    fireEvent.click(searchButton);
+  });
+  const nome = await waitForElement(() => container.getByTestId("nome"));
+
+  expect(nome.innerHTML).toEqual("jvvoliveira");
 });

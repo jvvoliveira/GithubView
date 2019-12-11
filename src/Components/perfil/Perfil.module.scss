@@ -8,10 +8,13 @@
     .wrapper_img {
       flex: 1 1;
       display: inline-block;
-      border: solid 1px;
       margin: 22px;
+      border-radius: 300px;
       &:hover {
         border-color: aqua;
+      }
+      img {
+        border-radius: 200px;
       }
     }
     .wrapper_info {

@@ -17,7 +17,6 @@ const Perfil = () => {
               </a>
             </div>
             <div
-              data-testid="informacoesPerfil"
               className={styles.wrapper_info}
             >
               <p data-testid="bio">{data.bio}</p>

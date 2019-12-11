@@ -23,28 +23,20 @@ export const _pesquisar = async (
 ) => {
   showLoading("Carregando...");
 
-  const urlRepos = `https://api.github.com/users/${nomeUsuario}/repos?per_page=8&page=1`;
-  const urlUsuario = `https://api.github.com/users/${nomeUsuario}`;
-
   try {
     const user = await getUser(nomeUsuario);
-    const repos = await getReposByUser(nomeUsuario);
-    if (!user.message) {
-      setUsuario(user.data, "OK");
-      setRepos_max(user.data.public_repos);
-    } else {
-      setUsuario(null, user.message);
-    }
+    const repos = await getReposByUser(nomeUsuario, 1);
+    setUsuario(user.data, "OK");
+    setRepos_max(user.data.public_repos);
+    setRepos(repos.data, "OK");
 
-    if (!repos.message) {
-      setRepos(repos.data, "OK");
-    } else {
-      setRepos([], repos.message);
-    }
+    setPage(2);
   } catch (error) {
-    alert("Erro");
+    if (error.response.status === 404) {
+      setUsuario(null, "not found");
+      setRepos([], "not found");
+    }
   }
-  setPage(2);
   hideLoading();
 };
 

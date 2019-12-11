@@ -2,20 +2,16 @@ import React, { useContext } from "react";
 import Repo from "./repositorio/Repo";
 import { loadingContext } from "../../App";
 import styles from "./RepoList.module.scss";
+import { getReposByUser } from "../../services";
 
-export const moreItens = (usuario, page, setRepos, repos, setPage) => {
-  fetch(
-    `https://api.github.com/users/${usuario.data.login}/repos?per_page=8&page=${page}`
-  )
-    .then(response => response.json())
-    .then(value => {
-      if (!value.message) {
-        setRepos([...repos.data, ...value], "OK");
-      } else {
-        setRepos([], value.message);
-      }
-    });
-  setPage(page + 1);
+export const moreItens = async (usuario, page, setRepos, repos, setPage) => {
+  try {
+    const responseRepos = await getReposByUser(usuario.data.login, page);
+    setRepos([...repos.data, ...responseRepos.data], "OK");
+    setPage(page + 1);
+  } catch (error) {
+    setRepos([], error.response.message);
+  }
 };
 
 export const viewMore = (page, pages, usuario, setRepos, repos, setPage) => {
@@ -24,13 +20,17 @@ export const viewMore = (page, pages, usuario, setRepos, repos, setPage) => {
   };
   if (page < pages) {
     return (
-      <div className={styles.viewMore} onClick={_moreItens}>
+      <div
+        data-testid="viewMore"
+        className={styles.viewMore}
+        onClick={_moreItens}
+      >
         <h3>Ver mais</h3>
       </div>
     );
   } else {
     return (
-      <div className={styles.viewMore}>
+      <div data-testid="allRepos" className={styles.viewMore}>
         <h3>Esses são todos os repositórios públicos</h3>
       </div>
     );
@@ -41,12 +41,11 @@ const RepoList = () => {
   const { repos, page, usuario, setRepos, setPage, repos_max } = useContext(
     loadingContext
   );
-  console.log(repos_max);
   let pages = repos_max / 8;
   if (repos_max % 8 > 0) {
     pages++;
   } //8 repositórios por página
-  const list = repos.data.map(repo => {
+  const list = repos.data.map((repo, index) => {
     return (
       <Repo
         name={repo.name}
@@ -54,6 +53,7 @@ const RepoList = () => {
         language={repo.language}
         description={repo.description}
         key={repo.html_url}
+        index={index}
       />
     );
   });
@@ -67,10 +67,14 @@ const RepoList = () => {
         </div>
       );
     } else {
-      return <h2>Usuário sem repositórios públicos</h2>;
+      return (
+        <h2 data-testid="repositoriosVazio">
+          Usuário sem repositórios públicos
+        </h2>
+      );
     }
   } else {
-    return <h2>Repositórios não encontrados</h2>;
+    return <h2 data-testid="semRepositorio">Repositórios não encontrados</h2>;
   }
 };
 
