@@ -25,7 +25,9 @@ test("Renderizar perfil sem conteúdo", async () => {
     container.getByText("Repositórios")
   ]);
 
-  const msgInitial = container.getByTestId("messageInitial");
+  const msgInitial = await waitForElement(() =>
+    container.getByTestId("messageInitial")
+  );
   expect(msgInitial).toHaveTextContent("Pesquise por algum usuário GitHub");
 });
 
@@ -46,7 +48,9 @@ test("Renderizar perfil com usuário não encontrado", async () => {
 
   const container = render(<App />);
 
-  const msgInitial = container.getByText("Pesquise por algum usuário GitHub");
+  const msgInitial = await waitForElement(() =>
+    container.getByText("Pesquise por algum usuário GitHub")
+  );
 
   const [inputNomeUsuario, searchButton] = await waitForElement(() => [
     container.getByPlaceholderText("nome do usuário no github"),
@@ -89,7 +93,9 @@ test("Renderizar perfil com erro", async () => {
 
   const container = render(<App />);
 
-  const msgInitial = container.getByText("Pesquise por algum usuário GitHub");
+  const msgInitial = await waitForElement(() =>
+    container.getByText("Pesquise por algum usuário GitHub")
+  );
 
   const [inputNomeUsuario, searchButton] = await waitForElement(() => [
     container.getByPlaceholderText("nome do usuário no github"),
