@@ -258,3 +258,107 @@ test("Renderizar tela de repositórios com usuário com mais de 8 repositórios"
 
   expect(viewMore).not.toBeInTheDocument();
 });
+
+test("Renderizar tela de repositórios com usuário com mais de 8 repositórios dando erro no 'ver mais'", async () => {
+  nock("https://api.github.com")
+    .get("/users/jvvoliveira")
+    .reply(200, {
+      login: "jvvoliveira",
+      name: "joãoVictor",
+      avatar_url: "https://avatars3.githubusercontent.com/u/48499490?v=4",
+      location: "Recife, PE",
+      bio: "Fazendo teste com React Testing library",
+      public_repos: 10,
+      followers: 100,
+      created_at: "2000-06-28T00:34:36Z"
+    })
+    .get("/users/jvvoliveira/repos?per_page=8&page=1")
+    .delay(2000)
+    .reply(200, [
+      {
+        name: "repo1",
+        link: "github.com",
+        language: "javascript",
+        description: "primeiro repositório"
+      },
+      {
+        name: "repo2",
+        link: "github.com",
+        language: "javascript",
+        description: "segundo repositório"
+      },
+      {
+        name: "repo3",
+        link: "github.com",
+        language: "javascript",
+        description: "terceiro repositório"
+      },
+      {
+        name: "repo4",
+        link: "github.com",
+        language: "javascript",
+        description: "quarto repositório"
+      },
+      {
+        name: "repo5",
+        link: "github.com",
+        language: "javascript",
+        description: "quinto repositório"
+      },
+      {
+        name: "repo6",
+        link: "github.com",
+        language: "javascript",
+        description: "sexto repositório"
+      },
+      {
+        name: "repo7",
+        link: "github.com",
+        language: "javascript",
+        description: "sétimo repositório"
+      },
+      {
+        name: "repo8",
+        link: "github.com",
+        language: "javascript",
+        description: "oitavo repositório"
+      }
+    ])
+    .get("/users/jvvoliveira/repos?per_page=8&page=2")
+    .delay(2000)
+    .reply(502, {
+      message: "error"
+    });
+
+  const container = render(<App />);
+
+  const linkRepositorios = await waitForElement(() =>
+    container.getByText("Repositórios")
+  );
+
+  act(() => {
+    fireEvent.click(linkRepositorios);
+  });
+
+  const [inputNomeUsuario, searchButton] = await waitForElement(() => [
+    container.getByPlaceholderText("nome do usuário no github"),
+    container.getByTestId("searchButton")
+  ]);
+
+  act(() => {
+    fireEvent.input(inputNomeUsuario, {
+      target: { value: "jvvoliveira" }
+    });
+  });
+  act(() => {
+    fireEvent.click(searchButton);
+  });
+
+  const viewMore = await waitForElement(() =>
+    container.getByTestId("viewMore")
+  );
+
+  act(() => {
+    fireEvent.click(viewMore);
+  });
+});

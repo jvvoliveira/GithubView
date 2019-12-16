@@ -9,7 +9,6 @@ const Repo = props => {
       className={styles.repositorio}
       href={link}
       target="_blank"
-      key={index}
     >
       <h3 data-testid="name">{name}</h3>
       <div className={styles.text}>

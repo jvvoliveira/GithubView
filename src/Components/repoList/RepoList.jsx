@@ -9,9 +9,7 @@ export const moreItens = async (usuario, page, setRepos, repos, setPage) => {
     const responseRepos = await getReposByUser(usuario.data.login, page);
     setRepos([...repos.data, ...responseRepos.data], "OK");
     setPage(page + 1);
-  } catch (error) {
-    setRepos([], error.response.message);
-  }
+  } catch (error) {}
 };
 
 export const viewMore = (page, pages, usuario, setRepos, repos, setPage) => {
@@ -52,8 +50,8 @@ const RepoList = () => {
         link={repo.html_url}
         language={repo.language}
         description={repo.description}
-        key={repo.html_url}
         index={index}
+        key={index}
       />
     );
   });

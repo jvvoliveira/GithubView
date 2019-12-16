@@ -25,6 +25,13 @@
     "eject": "react-scripts eject",
     "coverage": "npm t -- --coverage --watchAll=true"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/index.js",
+      "!src/serviceWorker.js"
+    ]
+  },
   "eslintConfig": {
     "extends": "react-app"
   },

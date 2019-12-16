@@ -33,8 +33,10 @@ test("Renderizar perfil com usuário não encontrado", async () => {
   nock("https://api.github.com")
     .get("/users/jvvoliveira")
     .reply(404, {
-      message: "user not found",
-      status: 404
+      response: {
+        message: "user not found",
+        status: 404
+      }
     })
     .get("/users/jvvoliveira/repos?per_page=8&page=1")
     .reply(404, {
@@ -64,6 +66,48 @@ test("Renderizar perfil com usuário não encontrado", async () => {
   );
 
   expect(msgInitial).not.toBeInTheDocument();
+});
+
+test("Renderizar perfil com erro", async () => {
+  nock("https://api.github.com")
+    .get("/users/jvvoliveira")
+    .delay(2000)
+    .reply(500, {
+      response: {
+        response: {
+          message: "error",
+          status: 500
+        }
+      }
+    })
+    .get("/users/jvvoliveira/repos?per_page=8&page=1")
+    .delay(2000)
+    .reply(500, {
+      message: "error",
+      status: 500
+    });
+
+  const container = render(<App />);
+
+  const msgInitial = container.getByText("Pesquise por algum usuário GitHub");
+
+  const [inputNomeUsuario, searchButton] = await waitForElement(() => [
+    container.getByPlaceholderText("nome do usuário no github"),
+    container.getByTestId("searchButton")
+  ]);
+
+  act(() => {
+    fireEvent.input(inputNomeUsuario, {
+      target: { value: "jvvoliveira" }
+    });
+
+    fireEvent.click(searchButton);
+  });
+
+  const loading = await waitForElement(() => container.getByTestId("loading"));
+  waitForElementToBeRemoved(() => loading);
+
+  await waitForDomChange();
 });
 
 test("Renderizar perfil com usuário correto", async () => {
@@ -126,7 +170,7 @@ test("Renderizar perfil com usuário correto", async () => {
   expect(dataCriacao).toHaveTextContent("Criado em: 2000-06-28T00:34:36Z");
 });
 
-test("Renderizar perfil com usuário sem name", async () => {
+test("Renderizar perfil com usuário sem atributo name", async () => {
   nock("https://api.github.com")
     .get("/users/jvvoliveira")
     .reply(200, {
