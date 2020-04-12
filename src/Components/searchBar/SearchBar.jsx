@@ -3,7 +3,7 @@ import { loadingContext } from "../../App";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import styles from "./SearchBar.module.scss";
 import * as yup from "yup";
-import { getUser, getReposByUser } from "../../services/index";
+import _pesquisar from "./_pesquisar";
 
 const validation = yup.object().shape({
   usuario: yup.string().required("Nenhum nome informado")
@@ -11,33 +11,6 @@ const validation = yup.object().shape({
 
 const initialValues = {
   usuario: ""
-};
-export const _pesquisar = async (
-  showLoading,
-  hideLoading,
-  nomeUsuario,
-  setUsuario,
-  setRepos,
-  setRepos_max,
-  setPage
-) => {
-  showLoading("Carregando...");
-
-  try {
-    const user = await getUser(nomeUsuario);
-    const repos = await getReposByUser(nomeUsuario, 1);
-    setUsuario(user.data, "OK");
-    setRepos_max(user.data.public_repos);
-    setRepos(repos.data, "OK");
-
-    setPage(2);
-  } catch (error) {
-    if (error.response.status === 404) {
-      setUsuario(null, "not found");
-      setRepos([], "not found");
-    }
-  }
-  hideLoading();
 };
 
 const Searchbar = () => {
