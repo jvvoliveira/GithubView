@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import Perfil from "./perfil/Perfil";
-import RepoList from "./repoList/RepoList";
+import Perfil from "../Pages/perfil/Perfil";
+import RepoList from "../Pages/repoList/RepoList";
 
 const Router = () => {
   return (

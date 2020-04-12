@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Repo.module.scss";
+import styles from "./Repositorio.module.scss";
 
 const Repo = props => {
   const { name, language, description, link, index } = props;
